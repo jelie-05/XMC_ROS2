@@ -9,6 +9,7 @@ setup.py
 ../../build/launch_node/launch_node.egg-info/top_level.txt
 ../../build/launch_node/launch_node.egg-info/zip-safe
 config/joy_teleop.yaml
+launch/bringup_launch.py
 launch_node/__init__.py
 launch_node/joy_to_steer.py
 resource/launch_node

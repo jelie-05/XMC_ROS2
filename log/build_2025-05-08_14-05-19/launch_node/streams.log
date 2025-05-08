@@ -1,0 +1,26 @@
+[0.474s] Invoking command in '/home/swadiryus/projects/XMC_ROS2/src/launch_node': PYTHONPATH=/home/swadiryus/projects/XMC_ROS2/build/launch_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/launch_node build --build-base /home/swadiryus/projects/XMC_ROS2/build/launch_node/build install --record /home/swadiryus/projects/XMC_ROS2/build/launch_node/install.log --single-version-externally-managed install_data
+[0.596s] running egg_info
+[0.599s] writing ../../build/launch_node/launch_node.egg-info/PKG-INFO
+[0.599s] writing dependency_links to ../../build/launch_node/launch_node.egg-info/dependency_links.txt
+[0.599s] writing entry points to ../../build/launch_node/launch_node.egg-info/entry_points.txt
+[0.599s] writing requirements to ../../build/launch_node/launch_node.egg-info/requires.txt
+[0.600s] writing top-level names to ../../build/launch_node/launch_node.egg-info/top_level.txt
+[0.600s] reading manifest file '../../build/launch_node/launch_node.egg-info/SOURCES.txt'
+[0.601s] writing manifest file '../../build/launch_node/launch_node.egg-info/SOURCES.txt'
+[0.601s] running build
+[0.601s] running build_py
+[0.602s] copying launch_node/joy_to_steer.py -> /home/swadiryus/projects/XMC_ROS2/build/launch_node/build/lib/launch_node
+[0.602s] running install
+[0.602s] running install_lib
+[0.603s] copying /home/swadiryus/projects/XMC_ROS2/build/launch_node/build/lib/launch_node/joy_to_steer.py -> /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node
+[0.603s] byte-compiling /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node/joy_to_steer.py to joy_to_steer.cpython-310.pyc
+[0.604s] running install_data
+[0.604s] copying package.xml -> /home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node
+[0.604s] copying launch/bringup_launch.py -> /home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node/launch
+[0.604s] running install_egg_info
+[0.605s] removing '/home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node-0.0.0-py3.10.egg-info' (and everything under it)
+[0.606s] Copying ../../build/launch_node/launch_node.egg-info to /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node-0.0.0-py3.10.egg-info
+[0.607s] running install_scripts
+[0.621s] Installing joy_to_steer script to /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/launch_node
+[0.621s] writing list of installed files to '/home/swadiryus/projects/XMC_ROS2/build/launch_node/install.log'
+[0.637s] Invoked command in '/home/swadiryus/projects/XMC_ROS2/src/launch_node' returned '0': PYTHONPATH=/home/swadiryus/projects/XMC_ROS2/build/launch_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/launch_node build --build-base /home/swadiryus/projects/XMC_ROS2/build/launch_node/build install --record /home/swadiryus/projects/XMC_ROS2/build/launch_node/install.log --single-version-externally-managed install_data

@@ -20,7 +20,9 @@ class JoyToSteer(Node):
         self.get_logger().info('Joy to steer node started')
 
         # Initialize the serial connection
-        self.device = serial.Serial(port='COM3', baudrate=115200, timeout=0.1)
+        # self.device = serial.Serial(port='COM3', baudrate=115200, timeout=0.1)
+        self.device_port = self.declare_parameter('device_port', '/dev/ttyUSB0').value
+        self.device = serial.Serial(port=self.device_port, baudrate=115200, timeout=0.1)
 
         # Initialize your node here
         self.joy_subscriber = self.create_subscription(
@@ -37,29 +39,35 @@ class JoyToSteer(Node):
         button_a = msg.buttons[0]  # Assuming button A is at index 0
 
         if button_a == 1: # Adding safety to avoid the stick is being moved unintentionally
-            try:
-                self.get_logger().info(f'Left stick x-axis: {left_stick_x}')
-                mapped_value = map_value(left_stick_x, -1.0, 1.0, 0.0, 180.0)
+            self.get_logger().info(f'Left stick x-axis: {left_stick_x}')
+            mapped_value = map_value(left_stick_x, -1.0, 1.0, 0.0, 180.0)
 
-                # Send the mapped value as a string with a newline character
-                self.device.write(f"{mapped_value}\n".encode())
+            # Send the mapped value as a string with a newline character
+            self.device.write(f"{mapped_value}\n".encode())
 
-                # Optional: Print the mapped value for debugging
-                self.get_logger().info(f"Mesage sent to serial device. Value: {mapped_value}")
+            # Optional: Print the mapped value for debugging
+            self.get_logger().info(f"Mesage sent to serial device. Value: {mapped_value}")
 
-                # Add a small delay to avoid flooding the serial connection
-                time.sleep(0.1)
+            # Add a small delay to avoid flooding the serial connection
+            time.sleep(0.1)
 
-            except KeyboardInterrupt:
-                self.get_logger().info('Keyboard interrupt detected. Exiting...')
+            # except KeyboardInterrupt:
+            #     self.get_logger().info('Keyboard interrupt detected. Exiting...')
+            #     self.device.close()
+            #     rclpy.shutdown()
+
+            # finally:
+            #     # Close the serial connection when done
+            #     self.device.close()
+            #     rclpy.shutdown()
+            #     print("Serial connection closed.")
+
+        def destroy_node(self):
+            if hasattr(self, 'device') and self.device.is_open:
                 self.device.close()
-                rclpy.shutdown()
-
-            finally:
-                # Close the serial connection when done
-                self.device.close()
-                rclpy.shutdown()
-                print("Serial connection closed.")
+                self.get_logger().info('Serial device closed')
+            super().destroy_node()
+            
 
 def main(args=None):
     rclpy.init(args=args)

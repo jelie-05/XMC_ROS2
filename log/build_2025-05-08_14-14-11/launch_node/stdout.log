@@ -1,0 +1,21 @@
+running egg_info
+writing ../../build/launch_node/launch_node.egg-info/PKG-INFO
+writing dependency_links to ../../build/launch_node/launch_node.egg-info/dependency_links.txt
+writing entry points to ../../build/launch_node/launch_node.egg-info/entry_points.txt
+writing requirements to ../../build/launch_node/launch_node.egg-info/requires.txt
+writing top-level names to ../../build/launch_node/launch_node.egg-info/top_level.txt
+reading manifest file '../../build/launch_node/launch_node.egg-info/SOURCES.txt'
+writing manifest file '../../build/launch_node/launch_node.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+copying package.xml -> /home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node
+copying launch/bringup_launch.py -> /home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node/launch
+running install_egg_info
+removing '/home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/launch_node/launch_node.egg-info to /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node-0.0.0-py3.10.egg-info
+running install_scripts
+Installing joy_to_steer script to /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/launch_node
+writing list of installed files to '/home/swadiryus/projects/XMC_ROS2/build/launch_node/install.log'

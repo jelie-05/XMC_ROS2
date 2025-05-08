@@ -5,7 +5,7 @@
 /home/swadiryus/projects/XMC_ROS2/install/launch_node/share/ament_index/resource_index/packages/launch_node
 /home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node/package.xml
 /home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node/config/joy_teleop.yaml
-/home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node/launch
+/home/swadiryus/projects/XMC_ROS2/install/launch_node/share/launch_node/launch/bringup_launch.py
 /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node-0.0.0-py3.10.egg-info/top_level.txt
 /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node-0.0.0-py3.10.egg-info/zip-safe
 /home/swadiryus/projects/XMC_ROS2/install/launch_node/lib/python3.10/site-packages/launch_node-0.0.0-py3.10.egg-info/requires.txt
