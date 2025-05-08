@@ -1,0 +1,3 @@
+[console_scripts]
+joy_to_steer = launch_node.joy_to_steer:main
+

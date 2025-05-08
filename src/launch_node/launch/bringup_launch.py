@@ -30,24 +30,23 @@ def generate_launch_description():
         parameters=[LaunchConfiguration('joy_config')],
     )
 
-    joy_teleop_node = Node(
-        package = 'joy_teleop',
-        executable = 'joy_teleop',
-        name = 'joy_teleop',
-        parameters = [LaunchConfiguration('joy_config')],
-    )
+    # joy_teleop_node = Node(
+    #     package = 'joy_teleop',
+    #     executable = 'joy_teleop',
+    #     name = 'joy_teleop',
+    #     parameters = [LaunchConfiguration('joy_config')],
+    # )
 
     joy_to_steer_node = Node(
         package = 'launch_node',
         executable = 'joy_to_steer',
         name = 'joy_to_steer',
-        parameters = [LaunchConfiguration('to_define')],
     )
 
     # finalize
     ld = LaunchDescription()
     ld.add_action(joy_node)
-    ld.add_action(joy_teleop_node)
+    # ld.add_action(joy_teleop_node)
     ld.add_action(joy_to_steer_node)
 
     return ld
