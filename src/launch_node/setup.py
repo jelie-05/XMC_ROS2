@@ -31,6 +31,7 @@ setup(
     entry_points={
         'console_scripts': [
             'joy_to_steer = launch_node.joy_to_steer:main',
+            'joy_publisher_dummy = launch_node.joy_publisher_dummy:main'
         ],
     },
 )
