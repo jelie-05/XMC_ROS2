@@ -11,6 +11,7 @@ setup.py
 config/joy_teleop.yaml
 launch/bringup_launch.py
 launch_node/__init__.py
+launch_node/joy_publisher_dummy.py
 launch_node/joy_to_steer.py
 resource/launch_node
 test/test_copyright.py

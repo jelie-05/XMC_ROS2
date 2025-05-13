@@ -30,6 +30,12 @@ def generate_launch_description():
         parameters=[LaunchConfiguration('joy_config')],
     )
 
+    # joy_dummy = Node(
+    #     package='launch_node',
+    #     executable='joy_publisher_dummy',
+    #     name='joy_publisher_dummy',
+    # )
+
     # joy_teleop_node = Node(
     #     package = 'joy_teleop',
     #     executable = 'joy_teleop',
@@ -47,5 +53,6 @@ def generate_launch_description():
     ld = LaunchDescription([joy_la])
     ld.add_action(joy_node)
     ld.add_action(joy_to_steer_node)
+    # ld.add_action(joy_dummy)
 
     return ld

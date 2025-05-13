@@ -16,10 +16,10 @@ def map_steer_value(val, in_min, in_max, out_min, out_max):
 
 def map_cmd_value(val_y, steering):
     
-    if val_y < -0.5:    # Forward
-        cmd = bytes([steering, 1, 1])
-    elif val_y > 0.5:
+    if val_y < -0.5:    # Backward
         cmd = bytes([steering, 1, 0])
+    elif val_y > 0.5:
+        cmd = bytes([steering, 1, 1])
     else:
         cmd = bytes([steering, 0, 0])
     
@@ -32,7 +32,8 @@ class JoyToSteer(Node):
 
         # Initialize the serial connection
         # self.device_port = self.declare_parameter('device_port', '/dev/ttyUSB0').value
-        # self.device = serial.Serial(port='COM5', baudrate=115200, timeout=0.1)
+        self.device = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=0.1)
+        self.get_logger().info('Device is initialized')
 
         # Initialize your node here
         self.joy_subscriber = self.create_subscription(
@@ -46,7 +47,7 @@ class JoyToSteer(Node):
         self.get_logger().info('Received joystick message')
         
         left_stick_x = msg.axes[0]  # Assuming left stick x-axis is at index 0
-        right_stick_y = msg.axes[2] # Assuming right stick y-axis is at index 2
+        right_stick_y = msg.axes[3] # Assuming right stick y-axis is at index 2
         button_a = msg.buttons[0]  # Assuming button A is at index 0
 
         if button_a == 1: # Adding safety to avoid the stick is being moved unintentionally
@@ -57,7 +58,7 @@ class JoyToSteer(Node):
             cmd = map_cmd_value(right_stick_y, steering)
 
             # self.device.write(f"{steering}\n".encode())
-            # self.device.write(cmd)
+            self.device.write(cmd)
 
             # Optional: Print the mapped value for debugging
             self.get_logger().info(f"Mesage sent to serial device. Value: {steering}; cmd: {cmd}")
