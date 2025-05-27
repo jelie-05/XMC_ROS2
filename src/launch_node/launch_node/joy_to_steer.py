@@ -44,7 +44,7 @@ class JoyToSteer(Node):
         )
 
     def joy_callback(self, msg):
-        self.get_logger().info('Received joystick message')
+        # self.get_logger().info('Received joystick message')
         
         left_stick_x = msg.axes[0]  # Assuming left stick x-axis is at index 0
         right_stick_y = msg.axes[3] # Assuming right stick y-axis is at index 2
@@ -65,6 +65,8 @@ class JoyToSteer(Node):
 
             # Add a small delay to avoid flooding the serial connection
             time.sleep(0.1)
+        else:
+            cmd = map_cmd_value(0,0)
 
         def destroy_node(self):
             if hasattr(self, 'device') and self.device.is_open:
