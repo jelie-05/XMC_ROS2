@@ -1,4 +1,0 @@
-[console_scripts]
-joy_publisher_dummy = launch_node.joy_publisher_dummy:main
-joy_to_steer = launch_node.joy_to_steer:main
-
