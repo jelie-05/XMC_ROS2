@@ -31,9 +31,9 @@ class JoyToSteer(Node):
         self.get_logger().info('Joy to steer node started')
 
         # Initialize the serial connection
-        # self.device_port = self.declare_parameter('device_port', '/dev/ttyUSB0').value
-        self.device = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=0.1)
-        self.get_logger().info('Device is initialized')
+        self.device_port = self.declare_parameter('device_port', '/dev/ttyACM0').value
+        self.device = serial.Serial(port=self.device_port, baudrate=115200, timeout=0.1)
+        self.get_logger().info(f"Opening serial device on {self.device_port}")
 
         # Initialize your node here
         self.joy_subscriber = self.create_subscription(
@@ -48,7 +48,7 @@ class JoyToSteer(Node):
         
         left_stick_x = msg.axes[0]  # Assuming left stick x-axis is at index 0
         right_stick_y = msg.axes[3] # Assuming right stick y-axis is at index 2
-        button_a = msg.buttons[0]  # Assuming button A is at index 0
+        button_a = msg.buttons[6]  # Assuming button A is at index 0
 
         if button_a == 1: # Adding safety to avoid the stick is being moved unintentionally
             self.get_logger().info(f'Left stick x-axis: {left_stick_x}')

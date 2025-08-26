@@ -30,6 +30,12 @@ def generate_launch_description():
         description='Path to the joy teleop config file'
     )
 
+    device_port_arg = DeclareLaunchArgument(
+        'device_port',
+        default_value='/dev/ttyACM0',
+        description='Serial port for the joy_to_steer device'
+    )
+
     # Joystick node
     joy_node = Node(
         package='joy',
@@ -43,6 +49,7 @@ def generate_launch_description():
         package='launch_node',
         executable='joy_to_steer',
         name='joy_to_steer',
+        parameters=[{'device_port': LaunchConfiguration('device_port')}],
     )
 
     # Royale ToF node (requires environment variables)
@@ -83,7 +90,7 @@ def generate_launch_description():
     )
 
     # Finalize LaunchDescription
-    ld = LaunchDescription([joy_la])
+    ld = LaunchDescription([joy_la, device_port_arg])
     ld.add_action(joy_node)
     ld.add_action(joy_to_steer_node)
     ld.add_action(tof_node)
