@@ -43,11 +43,20 @@ class Listener(roypy.IDepthDataListener):
         self.n = node
         self.pub_depth = node.create_publisher(Image, "royale/depth_image", 10)
         self.pub_cloud = node.create_publisher(PointCloud2, "royale/points", 10)
+        self.pub_gray  = node.create_publisher(Image, "royale/gray_image", 10)
         self.frame_id = node.declare_parameter("frame_id", "royale_optical_frame").get_parameter_value().string_value
         self.publish_cloud = node.declare_parameter("publish_cloud", True).get_parameter_value().bool_value
+        self._printed_frame_info = False
 
     def onNewData(self, frame):
         try:
+            # # Debug print only once
+            # if not self._printed_frame_info:
+            #     self._printed_frame_info = True
+            #     print("Frame type:", type(frame))
+            #     print("Frame attributes/methods:", dir(frame))
+            #     print("Callable methods:", [m for m in dir(frame) if callable(getattr(frame, m))])
+                
             # Some SDKs expose hasDepth()
             has_depth = True
             hd = getattr(frame, "hasDepth", None)
@@ -117,6 +126,49 @@ class Listener(roypy.IDepthDataListener):
                 ]
                 cloud = pc2.create_cloud(img.header, fields, pts)
                 self.pub_cloud.publish(cloud)
+
+            # Publishing Gray Scale
+            getGray = getattr(frame, "getGrayValue", None)
+            have_gray = callable(getGray)
+
+            if have_gray:
+                gray_vals = [0] * npts
+                for i in range(npts):
+                    gv = getGray(i)
+                    try:
+                        gray_vals[i] = int(gv)
+                    except Exception:
+                        gray_vals[i] = int(float(gv))
+
+                # Pad/trim grayscale list to match w*h
+                target_len = w * h
+                if len(gray_vals) < target_len:
+                    gray_vals.extend([0] * (target_len - len(gray_vals)))
+                elif len(gray_vals) > target_len:
+                    gray_vals = gray_vals[:target_len]
+
+                # Inspect range to decide encoding
+                gmin, gmax = min(gray_vals), max(gray_vals)
+                # self.n.get_logger().info(f"Gray range: min={gmin}, max={gmax}")
+
+                gray_img = Image()
+                gray_img.header = img.header  # reuse same header as depth
+                gray_img.height, gray_img.width = h, w
+                gray_img.is_bigendian = False
+
+                if gmax < 256:
+                    gray_img.encoding = "mono8"
+                    gray_img.step = w * 1
+                    gray_img.data = bytes(bytearray(gray_vals))
+                else:
+                    gray_img.encoding = "mono16"
+                    gray_img.step = w * 2
+                    import array as _arr
+                    gray_img.data = _arr.array('H', gray_vals).tobytes()
+
+                self.pub_gray.publish(gray_img)
+            # else:
+            #     self.n.get_logger().warn("No Gray Scale Image")
 
         except Exception as e:
             self.n.get_logger().error(f"Royale callback error: {e}")

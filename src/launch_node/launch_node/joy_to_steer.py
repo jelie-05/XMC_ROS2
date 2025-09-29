@@ -44,11 +44,11 @@ class JoyToSteer(Node):
         )
 
     def joy_callback(self, msg):
-        # self.get_logger().info('Received joystick message')
+        # self.get_logger().info(f'Received joystick message. Active axis')
         
-        left_stick_x = msg.axes[0]  # Assuming left stick x-axis is at index 0
-        right_stick_y = msg.axes[3] # Assuming right stick y-axis is at index 2
-        button_a = msg.buttons[6]  # Assuming button A is at index 0
+        left_stick_x = msg.axes[0]  # left stick x-axis 
+        right_stick_y = msg.axes[4] # right stick y-axis 
+        button_a = msg.buttons[4]  # button for safety
 
         if button_a == 1: # Adding safety to avoid the stick is being moved unintentionally
             self.get_logger().info(f'Left stick x-axis: {left_stick_x}')

@@ -9,28 +9,77 @@ from launch.substitutions import PythonExpression
 import os
 
 def generate_launch_description():
-    # Define config path for joy teleop
+    # ---------- Existing config paths ----------
     joy_teleop_config = os.path.join(
         get_package_share_directory('launch_node'),
         'config',
         'joy_teleop.yaml'
     )
 
-    # Realsense Launch File
     realsense_launch_file = os.path.join(
         get_package_share_directory('realsense2_camera'),
         'launch',
         'rs_launch.py'
     )
 
-    # Launch argument for joystick config
+    # ---------- New IMU-related launch args ----------
+    imu_enable_la = DeclareLaunchArgument(
+        'enable_imu',
+        default_value='true',
+        description='Start the PSoC6 IMU bridge and Madgwick filter.'
+    )
+    imu_port_la = DeclareLaunchArgument(
+        'imu_port',
+        default_value='/dev/ttyACM0',
+        description='Serial port of the PSoC6 board.'
+    )
+    imu_baud_la = DeclareLaunchArgument(
+        'imu_baud',
+        default_value='230400',
+        description='Baud rate for the PSoC6 serial.'
+    )
+    imu_frame_la = DeclareLaunchArgument(
+        'imu_frame_id',
+        default_value='imu_link',
+        description='Frame id stamped in IMU messages.'
+    )
+    imu_raw_topic_la = DeclareLaunchArgument(
+        'imu_raw_topic',
+        default_value='/imu/data',
+        description='Raw IMU topic published by the bridge.'
+    )
+    imu_oriented_topic_la = DeclareLaunchArgument(
+        'imu_oriented_topic',
+        default_value='/imu/data_oriented',
+        description='Orientation-corrected IMU topic (Madgwick output).'
+    )
+    use_mag_la = DeclareLaunchArgument(
+        'use_mag',
+        default_value='false',
+        description='Use magnetometer in Madgwick filter.'
+    )
+    world_frame_la = DeclareLaunchArgument(
+        'world_frame',
+        default_value='enu',
+        description='World frame for Madgwick filter (enu/ned).'
+    )
+
+    enable_imu = LaunchConfiguration('enable_imu')
+    imu_port = LaunchConfiguration('imu_port')
+    imu_baud = LaunchConfiguration('imu_baud')
+    imu_frame_id = LaunchConfiguration('imu_frame_id')
+    imu_raw_topic = LaunchConfiguration('imu_raw_topic')
+    imu_oriented_topic = LaunchConfiguration('imu_oriented_topic')
+    use_mag = LaunchConfiguration('use_mag')
+    world_frame = LaunchConfiguration('world_frame')
+
+    # ---------- Existing joy args ----------
     joy_la = DeclareLaunchArgument(
         'joy_config',
         default_value=joy_teleop_config,
         description='Path to the joy teleop config file'
     )
 
-    # device_port can be empty string to mean "disabled"
     device_port_arg = DeclareLaunchArgument(
         'device_port',
         default_value='',
@@ -38,20 +87,17 @@ def generate_launch_description():
     )
 
     device_port = LaunchConfiguration('device_port')
-
-    # Condition: only start joy nodes if device_port != ""
     joy_condition = IfCondition(PythonExpression(["'", device_port, "' != ''"]))
 
-    # Joystick node
+    # ---------- Existing nodes ----------
     joy_node = Node(
         package='joy',
         executable='joy_node',
         name='joy_node',
         parameters=[LaunchConfiguration('joy_config')],
-        condition=joy_condition
+        # condition=joy_condition
     )
 
-    # Joystick to steering converter
     joy_to_steer_node = Node(
         package='launch_node',
         executable='joy_to_steer',
@@ -60,7 +106,6 @@ def generate_launch_description():
         condition=joy_condition
     )
 
-    # Royale ToF node
     royale_root = os.path.expanduser('~/Documents/libroyale-4.24.0.1201-LINUX-x86-64Bit')
     tof_node = Node(
         package='royale_ros2',
@@ -76,25 +121,9 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Include the RealSense launch file
     realsense = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(realsense_launch_file)
     )
-
-    # # RViz2 (force XCB already handled by Qt on your system; add CycloneDDS + small delay)
-    # rviz_node = Node(
-    #     package='rviz2',
-    #     executable='rviz2',
-    #     name='rviz2',
-    #     output='screen',
-    #     additional_env={
-    #         'QT_QPA_PLATFORM': 'xcb',               # stable GUI backend
-    #         'RMW_IMPLEMENTATION': 'rmw_cyclonedds_cpp'  # avoid FastDDS-related crashes
-    #     }
-    # )
-
-    # # Start RViz a bit later so camera topics are up
-    # rviz_delayed = TimerAction(period=2.0, actions=[rviz_node])
 
     static_tf_royale_to_camera = Node(
         package='tf2_ros',
@@ -103,13 +132,55 @@ def generate_launch_description():
         arguments=['0', '0', '0', '0', '0', '0', 'camera_link', 'royale_optical_frame']
     )
 
-    # Finalize LaunchDescription
-    ld = LaunchDescription([joy_la, device_port_arg])
+    # ---------- NEW: PSoC6 IMU bridge (matches your ros2 run) ----------
+    psoc6_bridge_node = Node(
+        package='psoc6_motion_bridge',
+        executable='psoc6_motion_bridge',
+        name='psoc6_motion_bridge',
+        parameters=[{
+            'port': imu_port,
+            'baud': imu_baud,
+            'frame_id': imu_frame_id,
+            'topic': imu_raw_topic
+        }],
+        condition=IfCondition(enable_imu),
+        output='screen'
+    )
+
+    # ---------- NEW: Madgwick filter (matches your ros2 run) ----------
+    madgwick_node = Node(
+        package='imu_filter_madgwick',
+        executable='imu_filter_madgwick_node',
+        name='imu_filter_madgwick',
+        parameters=[{
+            'use_mag': use_mag,
+            'world_frame': world_frame
+        }],
+        remappings=[
+            ('imu/data_raw', imu_raw_topic),
+            ('imu/data', imu_oriented_topic),
+        ],
+        condition=IfCondition(enable_imu),
+        output='screen'
+    )
+
+    # ---------- Assemble LaunchDescription ----------
+    ld = LaunchDescription([
+        # args
+        joy_la, device_port_arg,
+        imu_enable_la, imu_port_la, imu_baud_la, imu_frame_la,
+        imu_raw_topic_la, imu_oriented_topic_la, use_mag_la, world_frame_la
+    ])
+
+    # existing
     ld.add_action(joy_node)
     ld.add_action(joy_to_steer_node)
     ld.add_action(tof_node)
     ld.add_action(realsense)
-    # ld.add_action(rviz_delayed)
     ld.add_action(static_tf_royale_to_camera)
+
+    # new IMU pipeline
+    ld.add_action(psoc6_bridge_node)
+    ld.add_action(madgwick_node)
 
     return ld
