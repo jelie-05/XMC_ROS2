@@ -27,8 +27,30 @@ ros2 run imu_filter_madgwick imu_filter_madgwick_node --ros-args -p use_mag:=fal
 ros2 run foxglove_bridge foxglove_bridge
 ```
 
-Open the visualizer
+**Open the visualizer**
 ```bash
 foxglove-studio
 ```
-and click `open connection`.
+and click `open connection`. The default is port:=8765.
+
+**Connecting via ssh**
+1. Connect to car via ssh (ip address in webex chat)
+2. Launch foxbridge:
+```bash
+ros2 run foxglove_bridge foxglove_bridge_launch.xml port:=8765
+```
+3. In another terminal:
+```bash
+ssh -L 8765:localhost:8765 (device_name)@(ip_address)
+```
+4. Open foxglove app in local device: 1) choose open connection 2) choose ws://localhost:8765
+
+
+## Build the robot model node (+ visualization)
+```
+sudo apt update
+sudo apt install ros-humble-joint-state-publisher-gui
+sudo apt install ros-humble-xacro
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+```
