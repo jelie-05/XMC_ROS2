@@ -21,6 +21,7 @@ ros2 run psoc6_motion_bridge psoc6_motion_bridge --ros-args   -p port:=/dev/ttyA
 ```bash
 ros2 run imu_filter_madgwick imu_filter_madgwick_node --ros-args -p use_mag:=false -p world_frame:=enu -r imu/data_raw:=/imu/data -r imu/data:=/imu/data_oriented
 ```
+To monitor the value, echo the `/imu/data_oriented` topic.
 
 ## Run foxglove
 ```bash
