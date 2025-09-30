@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="zukimo_car" xmlns:xacro="http://ros.org/wiki/xacro">
+    <link name="Back_wheels">
+        <inertial>
+            <origin xyz="-5.583510987960182e-14 0.00020507241463299408 0.022227362348171357" rpy="7.006492321624087e-46 -0.0 0.0" />
+            <mass value="20.66206902776893" />
+            <inertia ixx="0.24382398015437212" iyy="0.24382049517018317" izz="0.079982800220159" ixy="8.64759783189746e-15" iyz="-0.00037245362695319934" ixz="1.3580876080066625e-13" />
+        </inertial>
+        <visual name="Back_wheels_visual">
+            <origin xyz="7.515781350587956e-17 0.2549864613924881 0.02513775020929714" rpy="1.5707963267929956 1.570256115713958 1.5707963267956833" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/Back_wheels.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="Back_wheels_collision">
+            <origin xyz="7.515781350587956e-17 0.2549864613924881 0.02513775020929714" rpy="1.5707963267929956 1.570256115713958 1.5707963267956833" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/Back_wheels.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="Front_wheel_left">
+        <inertial>
+            <origin xyz="6.92884420590464e-10 -1.3508226436691473e-05 0.024999992752783824" rpy="-1.7516230804060213e-46 -0.0 0.0" />
+            <mass value="10.124080229337785" />
+            <inertia ixx="0.023207062116439303" iyy="0.023207067658123325" izz="0.04219575192949078" ixy="-6.791621721974053e-14" iyz="-1.025790164788099e-05" ixz="1.3029337900170868e-17" />
+        </inertial>
+        <visual name="Front_wheel_left_visual">
+            <origin xyz="6.876323465212422e-10 0.2549324334472598 0.12513773198031666" rpy="-1.570796326796874 -1.5702561157139578 -1.5707963267928176" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/Front_wheel_left.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="Front_wheel_left_collision">
+            <origin xyz="6.876323465212422e-10 0.2549324334472598 0.12513773198031666" rpy="-1.570796326796874 -1.5702561157139578 -1.5707963267928176" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/Front_wheel_left.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="front_wheel_right">
+        <inertial>
+            <origin xyz="9.592326932761353e-16 1.3503654847717428e-05 -0.024999999349206162" rpy="-1.7516230804060213e-46 -0.0 0.0" />
+            <mass value="10.201325598573922" />
+            <inertia ixx="0.02322436465106481" iyy="0.023224370188152342" izz="0.0421981714323172" ixy="1.2411459903662513e-15" iyz="-1.024986166853204e-05" ixz="-2.4397943369224495e-16" />
+        </inertial>
+        <visual name="front_wheel_right_visual">
+            <origin xyz="0.25500000000000067 6.752476031437027e-05 -0.12499998475780703" rpy="3.1415926535869807 -1.5702561157139578 -1.5707963267928176" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/front_wheel_right.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="front_wheel_right_collision">
+            <origin xyz="0.25500000000000067 6.752476031437027e-05 -0.12499998475780703" rpy="3.1415926535869807 -1.5702561157139578 -1.5707963267928176" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/front_wheel_right.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="camera-module">
+        <inertial>
+            <origin xyz="-3.780900835136462e-05 0.0329937687035342 -0.010232651044286207" rpy="0.0 1.2037062152420227e-35 1.0947644252537636e-47" />
+            <mass value="0.8784846570711062" />
+            <inertia ixx="0.00029680413532812133" iyy="0.0006932091965754367" izz="0.0009193883157842251" ixy="2.0997045333421966e-07" iyz="2.5351192149039577e-05" ixz="-7.091543648795646e-07" />
+        </inertial>
+        <visual name="camera-module_visual">
+            <origin xyz="-0.002749875092454598 0.4751080700000002 0.25749854929329596" rpy="-1.570796326794895 0.0005402110809386448 3.1415926535897927" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/camera-module.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="camera-module_collision">
+            <origin xyz="-0.002749875092454598 0.4751080700000002 0.25749854929329596" rpy="-1.570796326794895 0.0005402110809386448 3.1415926535897927" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/camera-module.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="frame">
+        <inertial>
+            <origin xyz="-4.620510966168645e-12 0.015070821550716242 0.06669557803553018" rpy="0.0 0.0 0.0" />
+            <mass value="42.72303096681609" />
+            <inertia ixx="2.137490512432945" iyy="0.39935016018026337" izz="2.014479135732927" ixy="4.637215611502661e-11" iyz="-0.04770246035593818" ixz="1.594367683726713e-11" />
+        </inertial>
+        <visual name="frame_visual">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/frame.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="frame_collision">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/frame.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="front-axil">
+        <inertial>
+            <origin xyz="7.588320727340212e-07 0.0013985922347097457 -0.020279685625468426" rpy="-6.908934844075556e-77 -1.0947644252537636e-47 1.2037062152420227e-35" />
+            <mass value="2.1223411408188753" />
+            <inertia ixx="0.00151083974202279" iyy="0.010579217970460571" izz="0.011462797436975952" ixy="4.89884031134273e-06" iyz="-3.0917736031744324e-05" ixz="-1.6702105239213212e-08" />
+        </inertial>
+        <visual name="front-axil_visual">
+            <origin xyz="-0.0001377505202725884 -0.25499995966278716 -0.030000000000000637" rpy="-3.1415926535897922 1.123119404775195e-15 3.1410524425088546" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/front-axil.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="front-axil_collision">
+            <origin xyz="-0.0001377505202725884 -0.25499995966278716 -0.030000000000000637" rpy="-3.1415926535897922 1.123119404775195e-15 3.1410524425088546" />
+            <geometry>
+                <mesh filename="package://zukimo_car/meshes/front-axil.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="frame_Revolute-11" type="continuous">
+        <origin xyz="0.030000000036112695 -0.2550000038769492 1.3496768135750623e-15" rpy="-0.0005402110809386867 -1.5707963267948952 0" />
+        <parent link="frame" />
+        <child link="Back_wheels" />
+        <axis xyz="-0.0 0.0005399999999999999 -0.9999999999999999" />
+    </joint>
+    <joint name="frame_Revolute-12" type="revolute">
+        <origin xyz="3.296975626105409e-09 0.2549999968690786 -0.030000000000000915" rpy="-3.1415926535897887 4.273945937965305e-16 3.1410524425088546" />
+        <parent link="frame" />
+        <child link="front-axil" />
+        <axis xyz="9.860761315262648e-32 0.0 1.0" />
+        <limit lower="-0.436332" upper="0.436332" effort="1000000" velocity="1000000" />
+    </joint>
+    <joint name="front-axil_Revolute-13" type="continuous">
+        <origin xyz="0.13499998 -7.293000000004213e-05 -0.029999999999999995" rpy="-3.141592653589793 1.5707963267948966 0" />
+        <parent link="front-axil" />
+        <child link="Front_wheel_left" />
+        <axis xyz="0.0 0.0005400000000000001 -1.0000000000000002" />
+    </joint>
+    <joint name="front-axil_Revolute-14" type="continuous">
+        <origin xyz="-0.13499998000000002 7.292999999997107e-05 -0.029999999999999995" rpy="-3.141592653589793 1.5707963267948966 0" />
+        <parent link="front-axil" />
+        <child link="front_wheel_right" />
+        <axis xyz="0.0 0.0005400000000000001 -1.0000000000000002" />
+    </joint>
+    <joint name="frame_Rigid-15" type="fixed">
+        <origin xyz="3.824809865498967e-09 0.25749999723357886 0.47510806999999766" rpy="-1.5707963267948921 4.273945937965305e-16 3.1410524425088546" />
+        <parent link="frame" />
+        <child link="camera-module" />
+    </joint>
+</robot>
