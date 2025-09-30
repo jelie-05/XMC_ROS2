@@ -9,7 +9,7 @@ from launch.substitutions import PythonExpression
 import os
 
 def generate_launch_description():
-    # ---------- Existing config paths ----------
+    # ---------- config paths ----------
     joy_teleop_config = os.path.join(
         get_package_share_directory('launch_node'),
         'config',
@@ -22,7 +22,13 @@ def generate_launch_description():
         'rs_launch.py'
     )
 
-    # ---------- New IMU-related launch args ----------
+    zukimo_display_launch = os.path.join(
+        get_package_share_directory('zukimo_car'),
+        'launch',
+        'display.launch.py'
+    )
+
+    # ---------- IMU-related launch args ----------
     imu_enable_la = DeclareLaunchArgument(
         'enable_imu',
         default_value='true',
@@ -73,7 +79,7 @@ def generate_launch_description():
     use_mag = LaunchConfiguration('use_mag')
     world_frame = LaunchConfiguration('world_frame')
 
-    # ---------- Existing joy args ----------
+    # ---------- joy args ----------
     joy_la = DeclareLaunchArgument(
         'joy_config',
         default_value=joy_teleop_config,
@@ -89,7 +95,7 @@ def generate_launch_description():
     device_port = LaunchConfiguration('device_port')
     joy_condition = IfCondition(PythonExpression(["'", device_port, "' != ''"]))
 
-    # ---------- Existing nodes ----------
+    # ---------- joy nodes ----------
     joy_node = Node(
         package='joy',
         executable='joy_node',
@@ -125,6 +131,10 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(realsense_launch_file)
     )
 
+    zukimo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(zukimo_display_launch)
+    )
+
     static_tf_royale_to_camera = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
@@ -132,7 +142,7 @@ def generate_launch_description():
         arguments=['0', '0', '0', '0', '0', '0', 'camera_link', 'royale_optical_frame']
     )
 
-    # ---------- NEW: PSoC6 IMU bridge (matches your ros2 run) ----------
+    # ---------- PSoC6 IMU bridge node ----------
     psoc6_bridge_node = Node(
         package='psoc6_motion_bridge',
         executable='psoc6_motion_bridge',
@@ -147,7 +157,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # ---------- NEW: Madgwick filter (matches your ros2 run) ----------
+    # ---------- Madgwick filter node -----------
     madgwick_node = Node(
         package='imu_filter_madgwick',
         executable='imu_filter_madgwick_node',
@@ -164,6 +174,28 @@ def generate_launch_description():
         output='screen'
     )
 
+    # # ---------- zukimo display node -----------
+    # joint_state_node = Node(
+    #         package='joint_state_publisher_gui',
+    #         executable='joint_state_publisher_gui',
+    #         name='joint_state_publisher_gui',
+    #         output='screen',
+    #     ),
+    # robot_state_node = Node(
+    #         package='robot_state_publisher',
+    #         executable='robot_state_publisher',
+    #         name='robot_state_publisher',
+    #         output='screen',
+    #         parameters=[{'robot_description': open('/tmp/zukimo_car.urdf').read()}],
+    #     ),
+    # rviz_node = Node(
+    #         package='rviz2',
+    #         executable='rviz2',
+    #         name='rviz2',
+    #         output='screen',
+    #         arguments=['-d', 'rviz/view_config.rviz']
+    #     )
+
     # ---------- Assemble LaunchDescription ----------
     ld = LaunchDescription([
         # args
@@ -172,14 +204,17 @@ def generate_launch_description():
         imu_raw_topic_la, imu_oriented_topic_la, use_mag_la, world_frame_la
     ])
 
-    # existing
+    # ld.add_action(joint_state_node)
+    # ld.add_action(robot_state_node)
+    # ld.add_action(rviz_node)
+
     ld.add_action(joy_node)
     ld.add_action(joy_to_steer_node)
     ld.add_action(tof_node)
     ld.add_action(realsense)
+    ld.add_action(zukimo)
     ld.add_action(static_tf_royale_to_camera)
 
-    # new IMU pipeline
     ld.add_action(psoc6_bridge_node)
     ld.add_action(madgwick_node)
 
